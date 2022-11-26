@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Hyperlink?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.effect.Glow?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<fx:root maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="700.0" type="BorderPane" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.SignUp_Controller">
+   <left>
+      <AnchorPane prefHeight="500.0" prefWidth="350.0" style="-fx-background-color: #70ABAF;" BorderPane.alignment="CENTER">
+         <children>
+            <ImageView fitHeight="213.0" fitWidth="205.0" layoutX="56.0" layoutY="38.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../../../Downloads/repair-workshop-icon-png-2904.png" />
+               </image>
+            </ImageView>
+            <Text layoutX="56.0" layoutY="299.0" strokeType="OUTSIDE" strokeWidth="0.0" text="      Vehicle Repair Management System" wrappingWidth="254.39120483398438">
+               <font>
+                  <Font name="Haettenschweiler" size="35.0" />
+               </font>
+               <effect>
+                  <Glow />
+               </effect>
+            </Text>
+         </children>
+      </AnchorPane>
+   </left>
+   <right>
+      <AnchorPane prefHeight="200.0" prefWidth="415.0" style="-fx-background-color: 0000;" BorderPane.alignment="CENTER">
+         <children>
+            <TextField id="SignUp_Name" fx:id="SignUp_Name" layoutX="49.0" layoutY="182.0" prefHeight="25.0" prefWidth="253.0" promptText="Name" style="-fx-background-color: transparent; -fx-border-color: #70ABAF; -fx-border-width: 0px 0px 2px 0px;" />
+            <TextField id="SignUp_Email" fx:id="SignUp_email" layoutX="50.0" layoutY="250.0" prefHeight="25.0" prefWidth="252.0" promptText="Email" style="-fx-background-color: transparent; -fx-border-color: #70ABAF; -fx-border-width: 0px 0px 2px 0px;" />
+            <PasswordField id="SignUp_Password" fx:id="SignUp_passwords" layoutX="50.0" layoutY="308.0" prefHeight="25.0" prefWidth="252.0" promptText="Password" style="-fx-background-color: transparent; -fx-border-color: #70ABAF; -fx-border-width: 0px 0px 2px 0px;" />
+            <Text fill="#70abaf" layoutX="87.0" layoutY="115.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Sign Up" wrappingWidth="216.3912353515625">
+               <font>
+                  <Font name="Impact" size="55.0" />
+               </font>
+               <effect>
+                  <Glow />
+               </effect>
+            </Text>
+            <Button id="SignUp_btn" fx:id="SignUp_btn" layoutX="130.0" layoutY="378.0" mnemonicParsing="false" prefHeight="43.0" prefWidth="93.0" style="-fx-background-color: #70ABAF;" text="Sign Up" textFill="WHITE">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Button>
+            <Hyperlink layoutX="100.0" layoutY="448.0" style="-fx-background-color: 0000;" text="Already Have an Account ?" />
+         </children>
+      </AnchorPane>
+   </right>
+</fx:root>
