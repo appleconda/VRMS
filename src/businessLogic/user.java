@@ -1,6 +1,6 @@
 package businessLogic;
 
-
+import db.*; 
 import java.lang.reflect.Field;
 import java.lang.Class;
 import java.util.ArrayList;
@@ -12,10 +12,16 @@ abstract public class user {
     private String password;
     private String name;
     private int id;
+    
+
+    public user(){}
 
     abstract boolean updateProfile();
 
+   
+
     public String jdbc_insertString_maker(String table) {
+
 
         Class<?> clobj = this.getClass();
         Field[] fields = clobj.getSuperclass().getDeclaredFields();
@@ -55,6 +61,8 @@ abstract public class user {
         String sql = "insert into " + table + "(" + names + ")values(" + values + ");";
         return sql;
     }
+    
+    
     // getters and setters
 
     public String getUsername() {

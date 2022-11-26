@@ -1,4 +1,7 @@
 import db.*;
+
+import java.util.Vector;
+
 import businessLogic.*;
 public class App  {
    
@@ -6,14 +9,17 @@ public class App  {
         db_handler db = new db_handler(); 
         user userCust = new customer(); 
 
-        userCust.setId(0);
+        userCust.setId(3);
         userCust.setName("Abdullah");
         userCust.setPassword("password");
         userCust.setUsername("username");
 
-        db.insert_a_user_instance("customer", userCust);
-        
-        String x = userCust.jdbc_insertString_maker("user"); 
-        System.out.println(x);
+        Object obj = new customer();
+        obj = userCust;
+        Vector<Object> objs = db.getAll("businessLogic.customer"); 
+        System.out.println(((customer)objs.get(0)).getName());
+        //db.insert(obj);
+        String[] str = {"id = 1"};
+        db.updateTable("customer", "name", "hammad2.0", str);
     }
 }

@@ -1,5 +1,6 @@
 package db;
 
+import businessLogic.*;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -8,8 +9,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.HashMap;
 import java.util.Map;
-
-import businessLogic.user;
+import java.util.Vector;
 
 public class db_handler {
 
@@ -28,41 +28,17 @@ public class db_handler {
         }
     }
 
-    public void updateTable(String table, String column, String value, String[] conditions) throws SQLException {
-        PreparedStatement prepStatement = null;
-        String query = "UPDATE ? SET ? = ? WHERE ";
-        String[] condSplits;
-        HashMap<String, String> map = new HashMap<String, String>();
-        Integer i = 1;
-
-        for (String parameter : conditions) {
-            condSplits = parameter.split(" ");
-            map.put(condSplits[0], condSplits[2]);
-            query += "? " + condSplits[1] + "?";
-
-            if (i == conditions.length) {
-                query += " AND ";
+    public boolean delete(String table, String[] conditions) throws SQLException {
+        String query = "delete from " + table + " where ";
+        String temp = "";
+        for (int i = 0; i < conditions.length; i++) {
+            temp += conditions[i];
+            if (i < conditions.length - 1) {
+                temp += " and ";
             }
-            i++;
+
         }
-
-        prepStatement = this.conn.prepareStatement(query);
-
-        prepStatement.setString(1, table);
-        prepStatement.setString(2, column);
-
-        i = 2;
-        for (Map.Entry<String, String> condition : map.entrySet()) {
-            prepStatement.setString(++i, condition.getKey());
-            prepStatement.setString(++i, condition.getKey());
-        }
-
-        prepStatement.executeQuery();
-        this.conn.commit();
-    }
-
-    public boolean insert_a_user_instance(String table, user obj) {
-        String query = obj.jdbc_insertString_maker(table);
+        query += temp;
 
         try (Statement tmt = conn.createStatement()) {
             tmt.executeUpdate(query);
@@ -70,5 +46,184 @@ public class db_handler {
         } catch (SQLException sqlex) {
             return false;
         }
+
+    }
+
+    public boolean updateTable(String table, String column, String value, String[] conditions) throws SQLException {
+        String query = "update " + table + " set " + column + " = '" + value + "' where ";
+        String temp = "";
+        for (int i = 0; i < conditions.length; i++) {
+            temp += conditions[i];
+            if (i < conditions.length - 1) {
+                temp += " and ";
+            }
+
+        }
+        query += temp;
+
+        try (Statement tmt = conn.createStatement()) {
+            tmt.executeUpdate(query);
+            return true;
+        } catch (SQLException sqlex) {
+            return false;
+        }
+
+    }
+
+    public boolean insert(Object clobj) {
+        String query = "";
+
+        if (clobj.getClass().getName() == "businessLogic.customer") {
+            query = ((user) clobj).jdbc_insertString_maker("customer");
+            System.out.println(query);
+        } else if (clobj.getClass().getName() == "businessLogic.admin") {
+            query = ((user) clobj).jdbc_insertString_maker("admin");
+            System.out.println(query);
+        } else if (clobj.getClass().getName() == "businessLogic.superAdmin") {
+            query = ((user) clobj).jdbc_insertString_maker("superAdmin");
+            System.out.println(query);
+
+        }
+        try (Statement tmt = conn.createStatement()) {
+            tmt.executeUpdate(query);
+            return true;
+        } catch (SQLException sqlex) {
+            return false;
+        }
+    }
+
+    public Vector<Object> getAll(String className) {
+        Vector<Object> clobj = new Vector<Object>();
+        if (className == "businessLogic.customer") {
+            String query = "select * from customer";
+            try (Statement tmt = conn.createStatement()) {
+                ResultSet rs = tmt.executeQuery(query);
+                while (rs.next()) {
+                    Object obj = new customer();
+                    ((customer) obj).setId(rs.getInt("id"));
+                    ((customer) obj).setUsername(rs.getString("username"));
+                    ((customer) obj).setPassword(rs.getString("password"));
+                    ((customer) obj).setName(rs.getString("name"));
+                    clobj.add(obj);
+                }
+            } catch (SQLException sqlex) {
+            }
+
+        } else if (className == "businessLogic.admin") {
+            String query = "select * from admin";
+            try (Statement tmt = conn.createStatement()) {
+                ResultSet rs = tmt.executeQuery(query);
+                while (rs.next()) {
+                    Object obj = new customer();
+                    ((admin) obj).setId(rs.getInt("id"));
+                    ((admin) obj).setUsername(rs.getString("username"));
+                    ((admin) obj).setPassword(rs.getString("password"));
+                    ((admin) obj).setName(rs.getString("name"));
+                    clobj.add(obj);
+                }
+            } catch (SQLException sqlex) {
+            }
+        } else if (className == "businessLogic.superAdmin") {
+            String query = "select * from superAdmin";
+            try (Statement tmt = conn.createStatement()) {
+                ResultSet rs = tmt.executeQuery(query);
+                while (rs.next()) {
+                    Object obj = new customer();
+                    ((superAdmin) obj).setId(rs.getInt("id"));
+                    ((superAdmin) obj).setUsername(rs.getString("username"));
+                    ((superAdmin) obj).setPassword(rs.getString("password"));
+                    ((superAdmin) obj).setName(rs.getString("name"));
+                    clobj.add(obj);
+                }
+            } catch (SQLException sqlex) {
+            }
+
+        }
+        return clobj;
+    }
+
+    public Vector<Object> conditional_get(String className, String[] conditions) {
+        Vector<Object> clobj = new Vector<Object>();
+        // conditional get for CUSTOMER
+        if (className == "businessLogic.customer") {
+            String query = "select * from customer where ";
+            String temp = "";
+            for (int i = 0; i < conditions.length; i++) {
+                temp += conditions[i];
+                if (i < conditions.length - 1) {
+                    temp += " and ";
+                }
+
+            }
+            query += temp;
+
+            try (Statement tmt = conn.createStatement()) {
+                ResultSet rs = tmt.executeQuery(query);
+                while (rs.next()) {
+                    Object obj = new customer();
+                    ((customer) obj).setId(rs.getInt("id"));
+                    ((customer) obj).setUsername(rs.getString("username"));
+                    ((customer) obj).setPassword(rs.getString("password"));
+                    ((customer) obj).setName(rs.getString("name"));
+                    clobj.add(obj);
+                }
+            } catch (SQLException sqlex) {
+
+            }
+
+        }
+        // Conditional get for ADMIN
+        else if (className == "businessLogic.admin") {
+            String query = "select * from customer where ";
+            String temp = "";
+            for (int i = 0; i < conditions.length; i++) {
+                temp += conditions[i];
+                if (i < conditions.length - 1) {
+                    temp += " and ";
+                }
+
+            }
+            query += temp;
+
+            try (Statement tmt = conn.createStatement()) {
+                ResultSet rs = tmt.executeQuery(query);
+                while (rs.next()) {
+                    Object obj = new customer();
+                    ((admin) obj).setId(rs.getInt("id"));
+                    ((admin) obj).setUsername(rs.getString("username"));
+                    ((admin) obj).setPassword(rs.getString("password"));
+                    ((admin) obj).setName(rs.getString("name"));
+                    clobj.add(obj);
+                }
+            } catch (SQLException sqlex) {
+
+            }
+        } else if (className == "businessLogic.superAdmin") {
+            String query = "select * from customer where ";
+            String temp = "";
+            for (int i = 0; i < conditions.length; i++) {
+                temp += conditions[i];
+                if (i < conditions.length - 1) {
+                    temp += " and ";
+                }
+
+            }
+            query += temp;
+
+            try (Statement tmt = conn.createStatement()) {
+                ResultSet rs = tmt.executeQuery(query);
+                while (rs.next()) {
+                    Object obj = new customer();
+                    ((superAdmin) obj).setId(rs.getInt("id"));
+                    ((superAdmin) obj).setUsername(rs.getString("username"));
+                    ((superAdmin) obj).setPassword(rs.getString("password"));
+                    ((superAdmin) obj).setName(rs.getString("name"));
+                    clobj.add(obj);
+                }
+            } catch (SQLException sqlex) {
+
+            }
+        }
+        return clobj;
     }
 }
