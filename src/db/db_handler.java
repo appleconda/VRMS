@@ -49,6 +49,41 @@ public class db_handler {
 
     }
 
+    public boolean remove(Object obj) throws SQLException {
+        if (obj.getClass().getName() == "businessLogic.customer") {
+            String id = Integer.toString(((customer) obj).getId());
+            String condition = "id = " + id;
+            String[] conditions = { condition };
+
+            delete("customer", conditions);
+        } else if (obj.getClass().getName() == "businessLogic.admin") {
+            String id = Integer.toString(((admin) obj).getId());
+            String condition = "id = " + id;
+            String[] conditions = { condition };
+
+            delete("admin", conditions);
+        } else if (obj.getClass().getName() == "businessLogic.superAdmin") {
+
+            String id = Integer.toString(((superAdmin) obj).getId());
+            String condition = "id = " + id;
+            String[] conditions = { condition };
+
+            delete("superAdmin", conditions);
+        } else if (obj.getClass().getName() == "businessLogic.bookings") {
+            String id = Integer.toString(((bookings) obj).getId());
+            String condition = "id = " + id;
+            String[] conditions = { condition };
+
+            delete("bookings", conditions);
+
+        }
+        else 
+        {
+            System.out.println("Classname not found");
+        }
+        return true;
+    }
+
     public boolean updateTable(String table, String column, String value, String[] conditions) throws SQLException {
         String query = "update " + table + " set " + column + " = '" + value + "' where ";
         String temp = "";
@@ -82,7 +117,13 @@ public class db_handler {
         } else if (clobj.getClass().getName() == "businessLogic.superAdmin") {
             query = ((user) clobj).jdbc_insertString_maker("superAdmin");
             System.out.println(query);
+        } else if (clobj.getClass().getName() == "businessLogic.bookings") {
+            query = ((bookings) clobj).jdbc_insertString_maker();
 
+        }
+        else
+        {
+            System.out.println("ClassName not found");
         }
         try (Statement tmt = conn.createStatement()) {
             tmt.executeUpdate(query);
@@ -114,7 +155,7 @@ public class db_handler {
             try (Statement tmt = conn.createStatement()) {
                 ResultSet rs = tmt.executeQuery(query);
                 while (rs.next()) {
-                    Object obj = new customer();
+                    Object obj = new admin();
                     ((admin) obj).setId(rs.getInt("id"));
                     ((admin) obj).setUsername(rs.getString("username"));
                     ((admin) obj).setPassword(rs.getString("password"));
@@ -128,7 +169,7 @@ public class db_handler {
             try (Statement tmt = conn.createStatement()) {
                 ResultSet rs = tmt.executeQuery(query);
                 while (rs.next()) {
-                    Object obj = new customer();
+                    Object obj = new superAdmin();
                     ((superAdmin) obj).setId(rs.getInt("id"));
                     ((superAdmin) obj).setUsername(rs.getString("username"));
                     ((superAdmin) obj).setPassword(rs.getString("password"));
@@ -138,6 +179,26 @@ public class db_handler {
             } catch (SQLException sqlex) {
             }
 
+        }
+        else if (className == "businessLogic.bookings")
+        {
+            String query = "select * from bookings";
+            try (Statement tmt = conn.createStatement()) {
+                ResultSet rs = tmt.executeQuery(query);
+                while (rs.next()) {
+                    Object obj = new bookings();
+                    ((bookings) obj).setDate(rs.getString("date"));
+                    ((bookings) obj).setTime(rs.getString("time"));
+                    ((bookings) obj).setId(rs.getInt("id"));
+                    clobj.add(obj);
+                }
+            } catch (SQLException sqlex) {
+            }
+
+        }
+        else 
+        {
+            System.out.println("Class Name not found");
         }
         return clobj;
     }
@@ -174,7 +235,7 @@ public class db_handler {
         }
         // Conditional get for ADMIN
         else if (className == "businessLogic.admin") {
-            String query = "select * from customer where ";
+            String query = "select * from admin where ";
             String temp = "";
             for (int i = 0; i < conditions.length; i++) {
                 temp += conditions[i];
@@ -188,7 +249,7 @@ public class db_handler {
             try (Statement tmt = conn.createStatement()) {
                 ResultSet rs = tmt.executeQuery(query);
                 while (rs.next()) {
-                    Object obj = new customer();
+                    Object obj = new admin();
                     ((admin) obj).setId(rs.getInt("id"));
                     ((admin) obj).setUsername(rs.getString("username"));
                     ((admin) obj).setPassword(rs.getString("password"));
@@ -199,7 +260,7 @@ public class db_handler {
 
             }
         } else if (className == "businessLogic.superAdmin") {
-            String query = "select * from customer where ";
+            String query = "select * from superAdmin where ";
             String temp = "";
             for (int i = 0; i < conditions.length; i++) {
                 temp += conditions[i];
@@ -213,7 +274,7 @@ public class db_handler {
             try (Statement tmt = conn.createStatement()) {
                 ResultSet rs = tmt.executeQuery(query);
                 while (rs.next()) {
-                    Object obj = new customer();
+                    Object obj = new superAdmin();
                     ((superAdmin) obj).setId(rs.getInt("id"));
                     ((superAdmin) obj).setUsername(rs.getString("username"));
                     ((superAdmin) obj).setPassword(rs.getString("password"));
@@ -223,6 +284,35 @@ public class db_handler {
             } catch (SQLException sqlex) {
 
             }
+        }
+        else if (className == "businessLogic.bookings") {
+            String query = "select * from bookings where ";
+            String temp = "";
+            for (int i = 0; i < conditions.length; i++) {
+                temp += conditions[i];
+                if (i < conditions.length - 1) {
+                    temp += " and ";
+                }
+
+            }
+            query += temp;
+
+            try (Statement tmt = conn.createStatement()) {
+                ResultSet rs = tmt.executeQuery(query);
+                while (rs.next()) {
+                    Object obj = new bookings();
+                    ((bookings) obj).setDate(rs.getString("date"));
+                    ((bookings) obj).setTime(rs.getString("time"));
+                    ((bookings) obj).setId(rs.getInt("id"));
+                    clobj.add(obj);
+                }
+            } catch (SQLException sqlex) {
+
+            }
+        }
+        else 
+        {
+            System.out.println("Class name not found");
         }
         return clobj;
     }

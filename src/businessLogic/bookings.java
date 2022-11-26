@@ -1,29 +1,14 @@
 package businessLogic;
 
-import db.*; 
 import java.lang.reflect.Field;
-import java.lang.Class;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
-abstract public class user {
-    private String username;
-    private String password;
-    private String name;
+public class bookings {
+    private String date;
+    private String time;
     private int id;
-    
-    
 
-    public user(){  }
-
-    abstract boolean updateProfile();
-
-   
-
-    public String jdbc_insertString_maker(String table) {
-
-
+    public String jdbc_insertString_maker() {
+        String table = "bookings"; 
         Class<?> clobj = this.getClass();
         Field[] fields = clobj.getSuperclass().getDeclaredFields();
 
@@ -35,12 +20,11 @@ abstract public class user {
 
         for (int i = 0; i < fields.length; i++) {
             try {
-                String name1 = ""; 
-                String value = ""; 
-                
-                if (fields[i].get(this) instanceof String || fields[i].get(this) instanceof Integer)
-                {
-                    name1 = fields[i].getName(); 
+                String name1 = "";
+                String value = "";
+
+                if (fields[i].get(this) instanceof String || fields[i].get(this) instanceof Integer) {
+                    name1 = fields[i].getName();
                     value = fields[i].get(this).toString();
                 }
                 if (i != 0) {
@@ -68,37 +52,22 @@ abstract public class user {
         String sql = "insert into " + table + "(" + names + ")values(" + values + ");";
         return sql;
     }
-    
-    
+
     // getters and setters
-
-    public String getUsername() {
-        return username;
+    public String getDate() {
+        return date;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public void setDate(String date) {
+        this.date = date;
     }
 
-    public String getPassword() {
-        return password;
+    public String getTime() {
+        return time;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    @Override
-    public String toString() {
-        return "user [username=" + username + ", password=" + password + ", name=" + name + ", id=" + id + "]";
+    public void setTime(String time) {
+        this.time = time;
     }
 
     public int getId() {
@@ -108,6 +77,5 @@ abstract public class user {
     public void setId(int id) {
         this.id = id;
     }
-
 
 }
