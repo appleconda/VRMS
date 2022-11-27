@@ -2,15 +2,20 @@ package businessLogic;
 
 import java.lang.reflect.Field;
 
-public class vehicles {
-    private customer customer_id;
-    private String regNo;
-    private String color;
+public class inventory {
+    private String name; 
+    private int quantity; 
 
-    public vehicles(user customer_id) {this.customer_id = (customer)customer_id;}
+    public inventory()
+    {
+        name = ""; 
+        quantity = 0; 
+    }
 
+   
     public String jdbc_insertString_maker() {
-        String table = "vehicles"; 
+        String table = "inventory";
+
         
         Field[] fields = this.getClass().getDeclaredFields();
 
@@ -22,17 +27,13 @@ public class vehicles {
 
         for (int i = 0; i < fields.length; i++) {
             try {
-                String name1 = "";
-                String value = "";
-
-                if (fields[i].get(this) instanceof String || fields[i].get(this) instanceof Integer) {
-                    name1 = fields[i].getName();
-                    value = fields[i].get(this).toString();
-                }
-                if (fields[i].get(this) instanceof customer)
+                String name1 = ""; 
+                String value = ""; 
+                
+                if (fields[i].get(this) instanceof String || fields[i].get(this) instanceof Integer)
                 {
-                    name1=fields[i].getName(); 
-                    value = Integer.toString(((customer)fields[i].get(this)).getId());
+                    name1 = fields[i].getName(); 
+                    value = fields[i].get(this).toString();
                 }
                 if (i != 0) {
                     names = names + ", ";
@@ -59,34 +60,23 @@ public class vehicles {
         String sql = "insert into " + table + "(" + names + ")values(" + values + ");";
         return sql;
     }
+    
 
 
-    public vehicles(customer owner) {
-        this.customer_id = owner;
+    public String getName() {
+        return name;
     }
 
-    public customer getCustomer_id() {
-        return customer_id;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public void setCustomer_id(customer owner) {
-        this.customer_id = owner;
+    public int getQuantity() {
+        return quantity;
     }
 
-    public String getRegNo() {
-        return regNo;
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
     }
-
-    public void setRegNo(String regNo) {
-        this.regNo = regNo;
-    }
-
-    public String getColor() {
-        return color;
-    }
-
-    public void setColor(String color) {
-        this.color = color;
-    }
-
+    
 }

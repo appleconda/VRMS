@@ -2,7 +2,10 @@ package businessLogic;
 
 
 
+import java.security.spec.ECPrivateKeySpec;
+
 import db.db_handler;
+import javafx.util.converter.IntegerStringConverter;
 
 public class superAdmin extends user {
     public superAdmin(String username, String password, String name, int id) {
@@ -33,7 +36,7 @@ public class superAdmin extends user {
     {
         try
         {
-            db.insert(bkObj); 
+            db.remove(bkObj); 
             return true; 
         }
         catch (Exception e)
@@ -97,7 +100,70 @@ public class superAdmin extends user {
     }
     
     //managing vehicles in the shop
+    public boolean addVehicle(vehicles veh,db_handler db)
+    {
+        try
+        {
+            db.insert(veh); 
+            return true; 
+        }
+        catch(Exception e)
+        {
+            return false; 
+        }
+    }
 
+    public boolean rmVehicle(vehicles veh, db_handler db)
+    {
+        try
+        {
+            db.remove(veh); 
+            return true; 
+        }
+        catch(Exception e)
+        {
+            return false; 
+        }
+    }
+
+
+    //managing inventory 
+    public boolean addInventory(inventory inv, db_handler db )
+    {
+        try
+        {
+            db.insert(inv); 
+            return true; 
+        }
+        catch (Exception e)
+        {
+            return false; 
+        }
+    }
+    public boolean rmInventory(inventory inv, int quantity, db_handler db)
+    {
+        try 
+        {
+            if (inv.getQuantity() == quantity)
+            {
+                System.out.println("came here");
+                db.remove(inv); 
+            }
+            else 
+            {
+                int val = inv.getQuantity() - quantity; 
+                String value = Integer.toString(val); 
+                String temp = "name = '" + inv.getName() + "'"; 
+                String[] conditions = {temp}; 
+                db.updateTable("inventory", "quantity", value, conditions); 
+            }
+            return true; 
+        }
+        catch(Exception e)
+        {
+            return false; 
+        }
+    }
 
     public boolean updateProfile()
     {

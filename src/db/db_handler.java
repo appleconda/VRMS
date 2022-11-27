@@ -39,7 +39,7 @@ public class db_handler {
 
         }
         query += temp;
-
+        System.out.println(query);
         try (Statement tmt = conn.createStatement()) {
             tmt.executeUpdate(query);
             return true;
@@ -76,9 +76,19 @@ public class db_handler {
 
             delete("bookings", conditions);
 
-        }
-        else 
-        {
+        } else if (obj.getClass().getName() == "businessLogic.vehicles") {
+            String id = ((vehicles) obj).getRegNo();
+            String condition = "regNo = '" + id +"'"; 
+            String[] conditions = { condition };
+
+            delete("vehicles", conditions);
+        } else if (obj.getClass().getName() == "businessLogic.inventory") {
+            String name = ((inventory) obj).getName();
+            String condition = "name = '" + name + "'";
+            String[] conditions = { condition };
+            delete("inventory", conditions);
+
+        } else {
             System.out.println("Classname not found");
         }
         return true;
@@ -95,7 +105,7 @@ public class db_handler {
 
         }
         query += temp;
-
+        System.out.println(query);
         try (Statement tmt = conn.createStatement()) {
             tmt.executeUpdate(query);
             return true;
@@ -119,13 +129,12 @@ public class db_handler {
             System.out.println(query);
         } else if (clobj.getClass().getName() == "businessLogic.bookings") {
             query = ((bookings) clobj).jdbc_insertString_maker();
-        }
-        else if (clobj.getClass().getName() == "businessLogic.vehicles")
-        {
-            query = ((vehicles)clobj).jdbc_insertString_maker();
-        }
-        else
-        {
+        } else if (clobj.getClass().getName() == "businessLogic.vehicles") {
+            query = ((vehicles) clobj).jdbc_insertString_maker();
+        } else if (clobj.getClass().getName() == "businessLogic.inventory") {
+            query = ((inventory) clobj).jdbc_insertString_maker();
+            System.out.println(query);
+        } else {
             System.out.println("ClassName not found");
         }
         try (Statement tmt = conn.createStatement()) {
@@ -182,18 +191,16 @@ public class db_handler {
             } catch (SQLException sqlex) {
             }
 
-        }
-        else if (className == "businessLogic.bookings")
-        {
+        } else if (className == "businessLogic.bookings") {
             String query = "select * from bookings";
             try (Statement tmt = conn.createStatement()) {
                 ResultSet rs = tmt.executeQuery(query);
                 while (rs.next()) {
                     int cust_id = rs.getInt("customer_id");
-                    String str = "id = " + cust_id; 
-                    String [] strs  = {str}; 
+                    String str = "id = " + cust_id;
+                    String[] strs = { str };
                     Vector<Object> returned_cust_obj = conditional_get("customer", strs);
-                    Object obj = new bookings(((customer)returned_cust_obj.firstElement()));
+                    Object obj = new bookings(((customer) returned_cust_obj.firstElement()));
                     ((bookings) obj).setDate(rs.getString("date"));
                     ((bookings) obj).setTime(rs.getString("time"));
                     ((bookings) obj).setId(rs.getInt("id"));
@@ -202,18 +209,16 @@ public class db_handler {
             } catch (SQLException sqlex) {
             }
 
-        }
-        else if (className == "businessLogic.vehicles")
-        {
+        } else if (className == "businessLogic.vehicles") {
             String query = "select * from vehicles";
             try (Statement tmt = conn.createStatement()) {
                 ResultSet rs = tmt.executeQuery(query);
                 while (rs.next()) {
                     int cust_id = rs.getInt("customer_id");
-                    String str = "id = " + cust_id; 
-                    String [] strs  = {str}; 
+                    String str = "id = " + cust_id;
+                    String[] strs = { str };
                     Vector<Object> returned_cust_obj = conditional_get("customer", strs);
-                    Object obj = new vehicles(((customer)returned_cust_obj.firstElement()));
+                    Object obj = new vehicles(((customer) returned_cust_obj.firstElement()));
                     ((vehicles) obj).setColor((rs.getString("color")));
                     ((vehicles) obj).setRegNo((rs.getString("regNo")));
                     clobj.add(obj);
@@ -221,9 +226,23 @@ public class db_handler {
             } catch (SQLException sqlex) {
             }
 
-        }
-        else 
+        } 
+        else if (className == "businessLogic.inventory")
         {
+            String query = "select * from inventory";
+            try (Statement tmt = conn.createStatement()) {
+                ResultSet rs = tmt.executeQuery(query);
+                while (rs.next()) {
+                    Object obj = new Object(); 
+                    ((inventory) obj).setName((rs.getString("name")));
+                    ((inventory) obj).setQuantity((rs.getInt("quantity")));
+                    clobj.add(obj);
+                }
+            } catch (SQLException sqlex) {
+            }
+
+        }
+        else {
             System.out.println("Class Name not found");
         }
         return clobj;
@@ -255,7 +274,7 @@ public class db_handler {
                     clobj.add(obj);
                 }
             } catch (SQLException sqlex) {
-
+                System.out.println("SQL exception thrown");
             }
 
         }
@@ -283,6 +302,7 @@ public class db_handler {
                     clobj.add(obj);
                 }
             } catch (SQLException sqlex) {
+                System.out.println("SQL exception thrown");
 
             }
         } else if (className == "businessLogic.superAdmin") {
@@ -308,10 +328,10 @@ public class db_handler {
                     clobj.add(obj);
                 }
             } catch (SQLException sqlex) {
+                System.out.println("SQL exception thrown");
 
             }
-        }
-        else if (className == "businessLogic.bookings") {
+        } else if (className == "businessLogic.bookings") {
             String query = "select * from bookings where ";
             String temp = "";
             for (int i = 0; i < conditions.length; i++) {
@@ -327,21 +347,20 @@ public class db_handler {
                 ResultSet rs = tmt.executeQuery(query);
                 while (rs.next()) {
                     int cust_id = rs.getInt("customer_id");
-                    String str = "id = " + cust_id; 
-                    String [] strs  = {str}; 
+                    String str = "id = " + cust_id;
+                    String[] strs = { str };
                     Vector<Object> returned_cust_obj = conditional_get("customer", strs);
-                    Object obj = new bookings(((customer)returned_cust_obj.firstElement()));
+                    Object obj = new bookings(((customer) returned_cust_obj.firstElement()));
                     ((bookings) obj).setDate(rs.getString("date"));
                     ((bookings) obj).setTime(rs.getString("time"));
                     ((bookings) obj).setId(rs.getInt("id"));
                     clobj.add(obj);
                 }
             } catch (SQLException sqlex) {
+                System.out.println("SQL exception thrown");
 
             }
-        }
-        else if (className == "businessLogic.vehicles")
-        {
+        } else if (className == "businessLogic.vehicles") {
             String query = "select * from vehicles where ";
             String temp = "";
             for (int i = 0; i < conditions.length; i++) {
@@ -357,22 +376,49 @@ public class db_handler {
                 ResultSet rs = tmt.executeQuery(query);
                 while (rs.next()) {
                     int cust_id = rs.getInt("customer_id");
-                    String str = "id = " + cust_id; 
-                    String [] strs  = {str}; 
+                    String str = "id = " + cust_id;
+                    String[] strs = { str };
                     Vector<Object> returned_cust_obj = conditional_get("customer", strs);
-                    Object obj = new vehicles(((customer)returned_cust_obj.firstElement()));
+                    Object obj = new vehicles(((customer) returned_cust_obj.firstElement()));
                     ((vehicles) obj).setColor((rs.getString("color")));
                     ((vehicles) obj).setRegNo((rs.getString("regNo")));
                     clobj.add(obj);
                 }
             } catch (SQLException sqlex) {
+                System.out.println("SQL exception thrown");
+
+            }
+        } 
+        else if (className == "businessLogic.inventory")
+        {
+            String query = "select * from inventory where ";
+            String temp = "";
+            for (int i = 0; i < conditions.length; i++) {
+                temp += conditions[i];
+                if (i < conditions.length - 1) {
+                    temp += " and ";
+                }
+
+            }
+            query += temp;
+            System.out.println(query);
+            try (Statement tmt = conn.createStatement()) {
+                ResultSet rs = tmt.executeQuery(query);
+                while (rs.next()) {
+                    Object obj = new inventory(); 
+                    ((inventory) obj).setName((rs.getString("name")));
+                    ((inventory) obj).setQuantity((rs.getInt("quantity")));
+                    clobj.add(obj);
+                }
+            } catch (SQLException sqlex) {
+                System.out.println("SQL exception thrown");
 
             }
         }
-        else 
-        {
+        else {
             System.out.println("Class name not found");
         }
+        
         return clobj;
     }
 }

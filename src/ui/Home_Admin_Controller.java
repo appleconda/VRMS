@@ -1,9 +1,13 @@
 package ui;
 
+import java.net.Inet4Address;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.Vector;
+
+import javax.swing.plaf.basic.BasicComboBoxUI.ItemHandler;
 
 import businessLogic.*; 
 import db.*; 
@@ -12,6 +16,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.layout.AnchorPane;
+import javafx.util.converter.IntegerStringConverter;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -282,7 +287,19 @@ public class Home_Admin_Controller {
     	customerID = Cust_ID_Car.getText(); 
     	Vehicle_reg_num = Reg_Num_Car.getText();
     	color = Color.getText();
-    	
+		
+
+		int int_custid = Integer.parseInt(customerID); 
+		String condition = "id = " + int_custid; 
+		String conditions[] = {condition}; 
+		Vector<Object> getCust = db.conditional_get("businessLogic.customer", conditions); 
+
+		vehicles veh = new vehicles(((customer)getCust.firstElement())); 
+		veh.setColor(color);
+		veh.setRegNo(Vehicle_reg_num);
+
+		supAdmin.addVehicle(veh, db); 
+
     	info_pane.setVisible(false);
     	System_Admin_pane.setVisible(false);
     	Service_Request_Pane.setVisible(false);
@@ -326,10 +343,22 @@ public class Home_Admin_Controller {
     	String customerID = "";
     	String Vehicle_reg_num = "";
     	String color = "";
+
     	customerID = Cust_ID_Car_R.getText();
     	Vehicle_reg_num = Reg_Num_Car_R.getText();
     	color = Color_R.getText();
     	
+		int int_custid = Integer.parseInt(customerID); 
+		String condition = "id = " + int_custid; 
+		String conditions[] = {condition}; 
+		Vector<Object> getCust = db.conditional_get("businessLogic.customer", conditions); 
+
+		vehicles veh = new vehicles(((customer)getCust.firstElement())); 
+		veh.setColor(color);
+		veh.setRegNo(Vehicle_reg_num);
+		supAdmin.rmVehicle(veh, db); 
+
+
     	info_pane.setVisible(false);
     	System_Admin_pane.setVisible(false);
     	Service_Request_Pane.setVisible(false);
@@ -424,8 +453,13 @@ public class Home_Admin_Controller {
     	Item_Name = inventory_name.getText();
     	Quantity = inventory_quantity.getText();
     	
+		inventory inv = new inventory(); 
+
+		inv.setName(Item_Name);
+		inv.setQuantity(Integer.parseInt(Quantity));
     	
-    	
+		supAdmin.addInventory(inv, db);
+		
     	
     	info_pane.setVisible(false);
     	System_Admin_pane.setVisible(false);
@@ -460,6 +494,17 @@ public class Home_Admin_Controller {
     	Item_Name = inventory_name_R.getText();
     	Quantity = inventory_quantity_R.getText();
     	
+		System.out.println(Quantity);
+
+		 
+		
+		String temp = "name = '" +Item_Name + "'"; 
+		String[] conditions = {temp};  
+		Vector<Object> obj =db.conditional_get("businessLogic.inventory", conditions); 
+		inventory inv = ((inventory)obj.firstElement());
+		supAdmin.rmInventory(inv, Integer.parseInt(Quantity), db); 
+
+
     	
     	info_pane.setVisible(false);
     	System_Admin_pane.setVisible(false);
@@ -578,17 +623,18 @@ public class Home_Admin_Controller {
     void cust_apply_remove_clicked(ActionEvent event) {
       	String Name = "";
     	String UserName = "";
-    	String password = "";
     	String ID_1 = "";
     	Integer ID ;
     	
-    	Name = cust_name.getText();
-    	UserName = cust_username.getText();
-    	password = cust_password.getText();
-    	ID_1 = cust_ID.getText();
+    	Name = cust_name_R.getText();
+    	UserName = cust_username_R.getText();
+    	ID_1 = cust_ID_R.getText();
     	ID = Integer.valueOf(ID_1);
     	
-
+		customer  rmCust = new customer(); 
+		rmCust.setId(ID); 
+		supAdmin.rmCustomer(rmCust, db);
+		
     	
     	info_pane.setVisible(false);
     	System_Admin_pane.setVisible(false);
@@ -696,7 +742,9 @@ public class Home_Admin_Controller {
     	Reg_Num = Reg_num_R.getText();
     	S_ID_1 = Service_ID_R.getText();
     	Serv_ID = Integer.valueOf(S_ID_1);
-    	
+  
+		
+
     	info_pane.setVisible(false);
     	System_Admin_pane.setVisible(false);
     	Service_Request_Pane.setVisible(false);

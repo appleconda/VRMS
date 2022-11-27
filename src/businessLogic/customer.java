@@ -8,11 +8,19 @@ public class customer extends user{
    
     
     
-    //Use cases of customers 
-    // public boolean bookAppointment()
-    // {
+    public boolean bookAppointment(bookings bkObj, db_handler db)
+    {
+        try
+        {
+            db.insert(bkObj); 
+            return true; 
+        }
+        catch (Exception e)
+        {
+            return false; 
+        }
 
-    // }
+    }
 
     // public boolean updateProfile()
     // {
