@@ -1,5 +1,8 @@
 package ui;
 
+import java.sql.SQLException;
+import java.util.Vector;
+
 import businessLogic.*;
 import db.db_handler;
 import javafx.event.ActionEvent;
@@ -14,8 +17,8 @@ public class Customer_Controller {
 
 	public customer custObj; 
 	private db_handler db; 
+	private String btn;
 		
-
 	public db_handler getDb() {
 		return db;
 	}
@@ -195,6 +198,9 @@ public class Customer_Controller {
     	
 
 		bookings bk = new bookings(custObj); 
+		bk.setDate(Dates);
+		bk.setTime(Times);
+		bk.setId(BookID);
 		db.insert(bk);
 
     	
@@ -229,17 +235,23 @@ public class Customer_Controller {
 
     @FXML
     boolean Denting_clicked(ActionEvent event) {
-    	return true;
+		btn = ""; 
+		btn = "d"; 
+		return true; 
     	
     }
 
     @FXML
     boolean Modify_clicked(ActionEvent event) {
+		btn = ""; 
+		btn = "m"; 
     	return true;
     }
 
     @FXML
     boolean Painting_clicked(ActionEvent event) {
+		btn = ""; 
+		btn = "p"; 
     	return true;
     }
 
@@ -259,7 +271,19 @@ public class Customer_Controller {
     	Amount1 = Amount.getText();
     	Amount_int = Integer.valueOf(Amount1);
     	
-    	
+		billing billObj = getBillingObj(custObj); 
+		billObj.cutAmount(Amount_int);
+		System.out.println("payment successfull");
+
+		String condition = "bill_id = " + billObj.getBill_id(); 
+		String[] conditions = {condition}; 
+		try {
+			db.updateTable("billing", "amount", Integer.toString(billObj.getAmount()), conditions);
+		} catch (SQLException e) {
+			System.out.println("failed to update");
+			e.printStackTrace();
+		}
+
     	Billing_pane.setVisible(false);
     	Booking_Pane.setVisible(false);
     	add_booking_pane.setVisible(false);
@@ -320,10 +344,14 @@ public class Customer_Controller {
 
     @FXML
     boolean  Wrap_btn_clicked(ActionEvent event) {
+		btn = ""; 
+		btn = "w"; 
     	return true;
     }
     @FXML
     boolean oil_change_clicked(ActionEvent event) {
+			btn = ""; 
+			btn = "o"; 
     		return true;
     }
 
@@ -338,6 +366,15 @@ public class Customer_Controller {
     	info_pane.setVisible(false);
     }
 
+	public billing getBillingObj(customer obj)
+	{
+		String condition = "bill_id = " + obj.getId(); 
+		String[] conditions = {condition}; 
+		Vector<Object> Obj = db.conditional_get("businessLogic.billing", conditions); 
+		billing billObj = ((billing)Obj.firstElement()); 
+		return billObj; 
+	}
+
     @FXML
     void booking_apply_add_clicked(ActionEvent event) {
     	String Reg_Num = "";
@@ -345,34 +382,44 @@ public class Customer_Controller {
     	Integer Cust_ID ;
     	String S_ID_1 = "";
     	Integer Serv_ID ;
+
     	Reg_Num = Reg_num1.getText();
     	C_ID_1 = cust_id_service.getText();
     	Cust_ID = Integer.valueOf(C_ID_1);
      	S_ID_1 = Service_ID.getText();
     	Serv_ID = Integer.valueOf(S_ID_1);
-    	
-    	if(oil_change_clicked(event)== true )
-    	{
-    		TotalCost = TotalCost +100;
-    	}
-    	if(Wrap_btn_clicked(event)== true )
-    	{
-    		TotalCost = TotalCost +200;
-    	}
-    	if(Painting_clicked(event)== true )
-    	{
-    		TotalCost = TotalCost +150;
-    	}
-    	if(Modify_clicked(event)== true )
-    	{
-    		TotalCost = TotalCost +300;
-    	}
-    	if(Denting_clicked(event)== true )
-    	{
-    		TotalCost = TotalCost +400;
-    	}
-    	
-    	
+  
+		
+		billing billObj = getBillingObj(custObj); 
+
+    	if (btn.equals("m"))
+		{	
+			billObj.setAmount(100);
+		}
+		else if (btn.equals("d"))
+		{
+			billObj.setAmount(120);
+		}
+		else if (btn.equals("p"))
+		{
+			billObj.setAmount(50);
+		}
+		else if (btn.equals("o"))
+		{
+			billObj.setAmount(66);
+		}
+		else if (btn.equals("w"))
+		{
+			billObj.setAmount(200);
+		}
+		String condition = "bill_id = " + billObj.getBill_id(); 
+		String[] conditions = {condition}; 
+		try {
+			db.updateTable("billing", "amount", Integer.toString(billObj.getAmount()), conditions);
+		} catch (SQLException e) {
+			System.out.println("failed to update");
+			e.printStackTrace();
+		}
     	
     	
     	Billing_pane.setVisible(false);

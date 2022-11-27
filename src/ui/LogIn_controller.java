@@ -5,6 +5,7 @@ import java.util.Vector;
 import java.util.concurrent.locks.Condition;
 import businessLogic.*;
 import javax.security.auth.login.LoginContext;
+import javax.swing.event.SwingPropertyChangeSupport;
 
 import javafx.*;
 import db.db_handler;
@@ -61,24 +62,35 @@ public class LogIn_controller {
         Vector<Object> custObj = db.getAll("businessLogic.customer");
         Vector<Object> supAdminObj = db.getAll("businessLogic.superAdmin");
 
-        for (var i : custObj)
-        {
-            if (((customer)i).getUsername().equals(UserName) && ((customer)i).getPassword().equals(password))
-            {
+        for (var i : custObj) {
+            if (((customer) i).getUsername().equals(UserName) && ((customer) i).getPassword().equals(password)) {
+
+                try {
+                    FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("Customers.fxml"));
+                    root = fxmlLoader.load();
+                    Customer_Controller controller = (Customer_Controller) fxmlLoader.getController();
+                    controller.setDb(db);
+                    controller.setCustObj(((customer) i));
+                    stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+                    scene = new Scene(root);
+                    stage.setScene(scene);
+                    stage.show();
+                } catch (IOException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
 
             }
         }
 
-        for (var j : supAdminObj)
-        {
-            if (((superAdmin)j).getUsername().equals(UserName) && ((superAdmin)j).getPassword().equals(password))
-            {
+        for (var j : supAdminObj) {
+            if (((superAdmin) j).getUsername().equals(UserName) && ((superAdmin) j).getPassword().equals(password)) {
                 try {
                     FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("Home_Admin.fxml"));
                     root = fxmlLoader.load();
                     Home_Admin_Controller controller = (Home_Admin_Controller) fxmlLoader.getController();
                     controller.setDb(db);
-                    controller.setSupAdmin(((superAdmin)j));
+                    controller.setSupAdmin(((superAdmin) j));
                     stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
                     scene = new Scene(root);
                     stage.setScene(scene);
@@ -94,7 +106,18 @@ public class LogIn_controller {
 
     @FXML
     void move_SignUp_Clicked(ActionEvent event) {
-
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("sample.fxml"));
+            root = fxmlLoader.load();
+            
+            stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            scene = new Scene(root);
+            stage.setScene(scene);
+            stage.show();
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
     }
 
 }

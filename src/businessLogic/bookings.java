@@ -86,4 +86,12 @@ public class bookings {
         this.bk_id = id;
     }
 
+    public customer getCustomer_id() {
+        return customer_id;
+    }
+
+    public void setCustomer_id(customer customer_id) {
+        this.customer_id = customer_id;
+    }
+
 }

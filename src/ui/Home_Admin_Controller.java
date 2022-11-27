@@ -2,6 +2,7 @@ package ui;
 
 import java.net.Inet4Address;
 import java.net.URL;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -15,6 +16,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
+import javafx.scene.control.ListView;
 import javafx.scene.layout.AnchorPane;
 import javafx.util.converter.IntegerStringConverter;
 import javafx.scene.control.TableView;
@@ -77,10 +79,10 @@ public class Home_Admin_Controller {
     private Button add_inv_btn;
 
     @FXML
-    private TableView<?> Inventory_List;
+    private Button remove_inv_btn;
 
     @FXML
-    private Button remove_inv_btn;
+    private ListView<?> Inventory_List;
 
     @FXML
     private AnchorPane info_pane;
@@ -92,10 +94,10 @@ public class Home_Admin_Controller {
     private Button add_cust_btn;
 
     @FXML
-    private TableView<customer> Customer_List;
+    private Button remove_cust_btn;
 
     @FXML
-    private Button remove_cust_btn;
+    private ListView<?> Customer_List;
 
     @FXML
     private AnchorPane Cust_add_pane;
@@ -158,49 +160,19 @@ public class Home_Admin_Controller {
     private AnchorPane Service_Request_Pane;
 
     @FXML
-    private TableView<?> Service_list;
-
-    @FXML
     private Button add_booking_btn;
 
     @FXML
     private Button remove_booking_btn;
 
     @FXML
+    private ListView<?> Service_list;
+
+    @FXML
     private AnchorPane System_Admin_pane;
 
     @FXML
-    private TableView<?> System_Admin_list;
-
-    @FXML
-    private AnchorPane add_booking_pane;
-
-    @FXML
-    private TextField Reg_num;
-
-    @FXML
-    private Button booking_apply_add;
-
-    @FXML
-    private RadioButton Modify_btn;
-
-    @FXML
-    private RadioButton Denting_btn;
-
-    @FXML
-    private RadioButton Painting_btn;
-
-    @FXML
-    private RadioButton oil_change_btn;
-
-    @FXML
-    private RadioButton wrap_btn;
-
-    @FXML
-    private TextField cust_id_service;
-
-    @FXML
-    private TextField Service_ID;
+    private ListView<?> System_Admin_list;
 
     @FXML
     private AnchorPane remove_booking_pane;
@@ -221,10 +193,10 @@ public class Home_Admin_Controller {
     private Button add_cars_btn;
 
     @FXML
-    private TableView<?> Cars_List;
+    private Button remove_cars_btn;
 
     @FXML
-    private Button remove_cars_btn;
+    private ListView<?> Cars_List;
 
     @FXML
     private AnchorPane add_car_pane;
@@ -255,6 +227,24 @@ public class Home_Admin_Controller {
 
     @FXML
     private TextField Color_R;
+
+    @FXML
+    private AnchorPane add_booking_pane;
+
+    @FXML
+    private Button New_booking;
+
+    @FXML
+    private TextField Cust_ID;
+
+    @FXML
+    private TextField Date;
+
+    @FXML
+    private TextField Time;
+
+    @FXML
+    private TextField Booking_ID;
 
     @FXML
     void Car_List_Clicked(ActionEvent event) {
@@ -743,7 +733,14 @@ public class Home_Admin_Controller {
     	S_ID_1 = Service_ID_R.getText();
     	Serv_ID = Integer.valueOf(S_ID_1);
   
-		
+		String condition = "bk_id = " + Serv_ID; 
+		String[] conditions = {condition}; 
+		try {
+			db.delete("bookings", conditions);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
     	info_pane.setVisible(false);
     	System_Admin_pane.setVisible(false);
@@ -787,40 +784,43 @@ public class Home_Admin_Controller {
     @FXML
     void booking_apply_add_clicked(ActionEvent event) {
     	
-     	String Reg_Num = "";
-    	String C_ID_1 = "";
-    	Integer Cust_ID ;
-    	String S_ID_1 = "";
-    	Integer Serv_ID ;
-    	Reg_Num = Reg_num.getText();
-    	C_ID_1 = cust_id_service.getText();
-    	Cust_ID = Integer.valueOf(C_ID_1);
-     	S_ID_1 = Service_ID.getText();
-    	Serv_ID = Integer.valueOf(S_ID_1);
-    	
-    	if(oil_change_clicked(event)== true )
-    	{
-    		TotalCost = TotalCost +100;
-    	}
-    	if(Wrap_btn_clicked(event)== true )
-    	{
-    		TotalCost = TotalCost +200;
-    	}
-    	if(Painting_clicked(event)== true )
-    	{
-    		TotalCost = TotalCost +150;
-    	}
-    	if(Modify_clicked(event)== true )
-    	{
-    		TotalCost = TotalCost +300;
-    	}
-    	if(Denting_clicked(event)== true )
-    	{
-    		TotalCost = TotalCost +400;
-    	}
+		String C_ID = "";
+    	Integer CustID ;
+    	String Dates = "";
+    	String Times = "";
+    	String B_ID = "";
+    	Integer BookID ;
     	
     	
+    	C_ID = Cust_ID.getText();
+    	CustID = Integer.valueOf(C_ID);
+    	B_ID = Booking_ID.getText();
+    	BookID = Integer.valueOf(B_ID);
+    	Dates = Date.getText();
+    	Times = Time.getText();
     	
+    	
+    	Vector<Object> custObjs = db.getAll("businessLogic.customer"); 
+		bookings bkObj = null; 
+		for (var i : custObjs)
+		{
+			if (((customer)i).getId() == CustID)
+			{
+				bkObj = new bookings(((customer)i)); 
+			}
+			
+		}
+		if (bkObj.equals(null))
+		{
+			System.out.println("no such customer exits");
+		}
+
+		bkObj.setDate(Dates);
+		bkObj.setTime(Times);
+		bkObj.setId(BookID);
+		
+		db.insert(bkObj); 
+
     	info_pane.setVisible(false);
     	System_Admin_pane.setVisible(false);
     	Service_Request_Pane.setVisible(false);

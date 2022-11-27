@@ -9,9 +9,12 @@ import java.net.*;
 import javax.security.auth.login.LoginContext;
 import javax.sound.midi.ControllerEventListener;
 
+import businessLogic.customer;
 import businessLogic.superAdmin;
+import businessLogic.user;
 import db.db_handler;
 import javafx.stage.Stage;
+import ui.Customer_Controller;
 import ui.Home_Admin_Controller;
 import ui.LogIn_controller; 
 
@@ -28,11 +31,12 @@ public class App extends Application {
             superAdmin supAdmin = new superAdmin(); 
 
             db_handler db = new db_handler(); 
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/ui/Customers.fxml")); 
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/ui/Login.fxml")); 
             Parent root = loader.load(); 
            
-            // LogIn_controller controller = (LogIn_controller)loader.getController(); 
-            // controller.setDb(db);
+            LogIn_controller controller = (LogIn_controller)loader.getController(); 
+            controller.setDb(db);
+            
             
 
             Scene scene = new Scene(root,600, 600); 
