@@ -5,12 +5,15 @@ import java.lang.reflect.Field;
 public class bookings {
     private String date;
     private String time;
-    private int id;
+    private int bk_id;
+    customer customer_id; 
+    
+    public bookings(user customer_id) {this.customer_id = (customer)customer_id;}
 
     public String jdbc_insertString_maker() {
         String table = "bookings"; 
-        Class<?> clobj = this.getClass();
-        Field[] fields = clobj.getSuperclass().getDeclaredFields();
+        
+        Field[] fields = this.getClass().getDeclaredFields();
 
         // Class<?> cl = this.getClass();
         // List<Field> fields = getAllFields(this.getClass());
@@ -26,6 +29,11 @@ public class bookings {
                 if (fields[i].get(this) instanceof String || fields[i].get(this) instanceof Integer) {
                     name1 = fields[i].getName();
                     value = fields[i].get(this).toString();
+                }
+                if (fields[i].get(this) instanceof customer)
+                {
+                    name1=fields[i].getName(); 
+                    value = Integer.toString(((customer)fields[i].get(this)).getId());
                 }
                 if (i != 0) {
                     names = names + ", ";
@@ -71,11 +79,11 @@ public class bookings {
     }
 
     public int getId() {
-        return id;
+        return bk_id;
     }
 
     public void setId(int id) {
-        this.id = id;
+        this.bk_id = id;
     }
 
 }

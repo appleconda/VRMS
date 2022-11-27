@@ -14,8 +14,17 @@ abstract public class user {
     private int id;
     
     
+    public user() {}
+    
 
-    public user(){  }
+    public user(String username, String password, String name, int id)
+    {
+        this.username = username; 
+        this.password = password; 
+        this.name = name; 
+        this.id = id; 
+    }
+    
 
     abstract boolean updateProfile();
 

@@ -1,10 +1,20 @@
 package businessLogic;
 
-import java.security.spec.ECPublicKeySpec;
+
 
 import db.db_handler;
 
 public class superAdmin extends user {
+    public superAdmin(String username, String password, String name, int id) {
+        super(username, password, name, id);
+        
+    }
+
+    public superAdmin()
+    {
+        
+    }
+
     //bookings management 
     public boolean addBookings(bookings bkObj, db_handler db) 
     {
@@ -85,10 +95,9 @@ public class superAdmin extends user {
             return false; 
         }
     }
-    // public boolean manage_repair_cars()
-    // {
+    
+    //managing vehicles in the shop
 
-    // }
 
     public boolean updateProfile()
     {

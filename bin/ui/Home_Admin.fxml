@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.RadioButton?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
@@ -11,55 +12,57 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.Home_Admin_Controller">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ui.Home_Admin_Controller">
    <left>
       <AnchorPane prefHeight="400.0" prefWidth="121.0" style="-fx-background-color: #70ABAF;" BorderPane.alignment="CENTER">
          <children>
-            <ImageView fitHeight="135.0" fitWidth="171.0" layoutX="-3.0" pickOnBounds="true" preserveRatio="true">
+            <Button fx:id="Log_out" mnemonicParsing="false" onAction="#Log_out_clicked" text="Log Out" />
+            <ImageView fitHeight="135.0" fitWidth="171.0" layoutX="9.0" layoutY="25.0" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@../../../../Downloads/repair-workshop-icon-png-2904.png" />
                </image>
             </ImageView>
-            <Text layoutX="14.0" layoutY="161.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Welcome Super Admin " wrappingWidth="134.27862548828125">
+            <Text layoutX="14.0" layoutY="167.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Welcome Super Admin " wrappingWidth="134.27862548828125">
                <font>
                   <Font name="Agency FB" size="18.0" />
                </font>
             </Text>
-            <Button fx:id="Inventory_btn" layoutX="-2.0" layoutY="188.0" mnemonicParsing="false" onAction="#Inventory_click" prefHeight="25.0" prefWidth="151.0" style="-fx-background-color: #4e9296;" text="Inventory" />
-            <Button fx:id="Customers_btn" layoutY="223.0" mnemonicParsing="false" onAction="#Customers_clicked" prefHeight="25.0" prefWidth="151.0" style="-fx-background-color: #4e9296;" text="Customers" />
-            <Button fx:id="Service_Request_btn" layoutY="263.0" mnemonicParsing="false" onAction="#Service_btn_clicked" prefHeight="25.0" prefWidth="151.0" style="-fx-background-color: #4e9296;" text="Service Request" />
-            <Button fx:id="System_Admin_btn" layoutY="307.0" mnemonicParsing="false" onAction="#System_Admin_clicked" prefHeight="25.0" prefWidth="151.0" style="-fx-background-color: #4e9296;" text="System Admin" />
+            <Button fx:id="Inventory_btn" layoutX="-2.0" layoutY="188.0" mnemonicParsing="false" onAction="#Inventory_click" prefHeight="25.0" prefWidth="158.0" style="-fx-background-color: #4e9296;" text="Inventory" />
+            <Button fx:id="Customers_btn" layoutY="223.0" mnemonicParsing="false" onAction="#Customers_clicked" prefHeight="25.0" prefWidth="157.0" style="-fx-background-color: #4e9296;" text="Customers" />
+            <Button fx:id="Service_Request_btn" layoutY="263.0" mnemonicParsing="false" onAction="#Service_btn_clicked" prefHeight="25.0" prefWidth="156.0" style="-fx-background-color: #4e9296;" text="Service Request" />
+            <Button fx:id="System_Admin_btn" layoutX="-2.0" layoutY="300.0" mnemonicParsing="false" onAction="#System_Admin_Clicked" prefHeight="25.0" prefWidth="158.0" style="-fx-background-color: #4e9296;" text="System Admin" />
+            <Button fx:id="Car_List_btn" layoutX="-2.0" layoutY="339.0" mnemonicParsing="false" onAction="#Car_List_Clicked" prefHeight="25.0" prefWidth="159.0" style="-fx-background-color: #4e9296;" text="Car List" />
          </children>
       </AnchorPane>
    </left>
    <right>
-      <AnchorPane fx:id="info_pane" prefHeight="400.0" prefWidth="465.0" BorderPane.alignment="CENTER">
+      <AnchorPane fx:id="Main_pane" prefHeight="400.0" prefWidth="465.0" BorderPane.alignment="CENTER">
          <children>
-            <AnchorPane fx:id="Inventory_pane" layoutX="-3.0" prefHeight="400.0" prefWidth="453.0" visible="false">
+            <AnchorPane fx:id="Inventory_pane" layoutX="27.0" layoutY="15.0" prefHeight="400.0" prefWidth="453.0" visible="false">
                <children>
                   <Text layoutX="26.0" layoutY="46.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Inventory " wrappingWidth="221.162109375">
                      <font>
                         <Font name="System Bold" size="30.0" />
                      </font>
                   </Text>
-                  <Button fx:id="add_inv_btn" layoutX="39.0" layoutY="87.0" mnemonicParsing="false" style="-fx-background-color: #4e9296;" text="Add Item" />
+                  <Button fx:id="add_inv_btn" layoutX="39.0" layoutY="87.0" mnemonicParsing="false" onAction="#add_inv_clicked" style="-fx-background-color: #4e9296;" text="Add Item" />
                   <TableView fx:id="Inventory_List" layoutX="32.0" layoutY="127.0" prefHeight="260.0" prefWidth="414.0">
                     <columns>
                       <TableColumn prefWidth="75.0" text="C1" />
                       <TableColumn prefWidth="75.0" text="C2" />
                     </columns>
                   </TableView>
-                  <Button fx:id="remove_inv_btn" layoutX="315.0" layoutY="87.0" mnemonicParsing="false" style="-fx-background-color: #4e9296;" text="Remove Item" />
+                  <Button fx:id="remove_inv_btn" layoutX="315.0" layoutY="87.0" mnemonicParsing="false" onAction="#remove_inv_clicked" style="-fx-background-color: #4e9296;" text="Remove Item" />
                </children>
             </AnchorPane>
-            <AnchorPane layoutX="2.0" layoutY="1.0" prefHeight="400.0" prefWidth="446.0" visible="false">
+            <AnchorPane fx:id="info_pane" layoutX="49.0" layoutY="18.0" prefHeight="409.0" prefWidth="450.0">
                <children>
                   <Text layoutX="14.0" layoutY="22.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Information" wrappingWidth="144.63739013671875">
                      <font>
                         <Font size="19.0" />
                      </font>
                   </Text>
-                  <Text layoutX="14.0" layoutY="57.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Welcome System Admin you have the following controls :">
+                  <Text layoutX="14.0" layoutY="57.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Welcome Super Admin you have the following controls :">
                      <font>
                         <Font size="15.0" />
                      </font>
@@ -81,7 +84,7 @@
                   </Text>
                </children>
             </AnchorPane>
-            <AnchorPane fx:id="Inventory_pane1" layoutX="7.0" layoutY="10.0" prefHeight="400.0" prefWidth="453.0" visible="false">
+            <AnchorPane fx:id="Customers_pane" layoutX="37.0" layoutY="15.0" prefHeight="400.0" prefWidth="453.0" visible="false">
                <children>
                   <Text layoutX="26.0" layoutY="46.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Customers" wrappingWidth="221.162109375">
                      <font>
@@ -98,7 +101,7 @@
                   <Button fx:id="remove_cust_btn" layoutX="315.0" layoutY="87.0" mnemonicParsing="false" onAction="#remove_cust_clicked" style="-fx-background-color: #4e9296;" text="Remove Customer" />
                </children>
             </AnchorPane>
-            <AnchorPane fx:id="Cust_add_pane" layoutX="7.0" layoutY="10.0" prefHeight="400.0" prefWidth="453.0" visible="false">
+            <AnchorPane fx:id="Cust_add_pane" layoutX="47.0" layoutY="15.0" prefHeight="400.0" prefWidth="453.0" visible="false">
                <children>
                   <Text layoutX="27.0" layoutY="41.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Enter Customer Details" wrappingWidth="399.82879638671875">
                      <font>
@@ -106,12 +109,13 @@
                      </font>
                   </Text>
                   <TextField fx:id="cust_name" layoutX="27.0" layoutY="110.0" prefHeight="25.0" prefWidth="182.0" promptText="Name" />
-                  <TextField fx:id="cust_phone" layoutX="27.0" layoutY="154.0" prefHeight="25.0" prefWidth="181.0" promptText="Phone Number" />
-                  <TextField fx:id="cust_email" layoutX="27.0" layoutY="200.0" prefHeight="25.0" prefWidth="184.0" promptText="E mail" />
+                  <TextField fx:id="cust_username" layoutX="27.0" layoutY="154.0" prefHeight="25.0" prefWidth="181.0" promptText="User Name" />
+                  <TextField fx:id="cust_password" layoutX="27.0" layoutY="200.0" prefHeight="25.0" prefWidth="184.0" promptText="password" />
                   <Button fx:id="cust_apply_add" layoutX="323.0" layoutY="310.0" mnemonicParsing="false" onAction="#cust_apply_add_clicked" prefHeight="25.0" prefWidth="81.0" style="-fx-background-color: #4e9296;" text="Add" />
+                  <TextField fx:id="cust_ID" layoutX="27.0" layoutY="246.0" prefHeight="25.0" prefWidth="182.0" promptText="ID" />
                </children>
             </AnchorPane>
-            <AnchorPane fx:id="cust_remove_pane" layoutX="17.0" layoutY="20.0" prefHeight="400.0" prefWidth="453.0" visible="false">
+            <AnchorPane fx:id="cust_remove_pane" layoutX="47.0" layoutY="15.0" prefHeight="400.0" prefWidth="453.0" visible="false">
                <children>
                   <Text layoutX="27.0" layoutY="41.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Enter Customer Details" wrappingWidth="399.82879638671875">
                      <font>
@@ -119,12 +123,12 @@
                      </font>
                   </Text>
                   <TextField fx:id="cust_ID_R" layoutX="27.0" layoutY="110.0" prefHeight="25.0" prefWidth="182.0" promptText="ID" />
-                  <TextField fx:id="cust_phone_R" layoutX="27.0" layoutY="154.0" prefHeight="25.0" prefWidth="181.0" promptText="Phone Number" />
-                  <TextField fx:id="cust_email_R" layoutX="27.0" layoutY="201.0" prefHeight="25.0" prefWidth="184.0" promptText="E mail" />
+                  <TextField fx:id="cust_username_R" layoutX="27.0" layoutY="154.0" prefHeight="25.0" prefWidth="181.0" promptText="UserName" />
+                  <TextField fx:id="cust_name_R" layoutX="27.0" layoutY="201.0" prefHeight="25.0" prefWidth="184.0" promptText="Name" />
                   <Button fx:id="cust_apply_remove" layoutX="323.0" layoutY="310.0" mnemonicParsing="false" onAction="#cust_apply_remove_clicked" prefHeight="25.0" prefWidth="81.0" style="-fx-background-color: #4e9296;" text="Remove" />
                </children>
             </AnchorPane>
-            <AnchorPane fx:id="remove_item_pane" layoutX="17.0" layoutY="20.0" prefHeight="400.0" prefWidth="453.0" visible="false">
+            <AnchorPane fx:id="add_item_pane" layoutX="47.0" layoutY="15.0" prefHeight="400.0" prefWidth="453.0" visible="false">
                <children>
                   <Text layoutX="27.0" layoutY="41.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Enter Item Details" wrappingWidth="399.82879638671875">
                      <font>
@@ -136,7 +140,7 @@
                   <Button fx:id="Inventory_apply_add" layoutX="323.0" layoutY="310.0" mnemonicParsing="false" onAction="#Inv_apply_add_clicked" prefHeight="25.0" prefWidth="81.0" style="-fx-background-color: #4e9296;" text="Add" />
                </children>
             </AnchorPane>
-            <AnchorPane fx:id="add_item_pane" layoutX="27.0" layoutY="30.0" prefHeight="400.0" prefWidth="453.0" visible="false">
+            <AnchorPane fx:id="remove_item_pane" layoutX="48.0" layoutY="15.0" prefHeight="400.0" prefWidth="453.0" visible="false">
                <children>
                   <Text layoutX="27.0" layoutY="41.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Enter Item Details" wrappingWidth="399.82879638671875">
                      <font>
@@ -148,7 +152,7 @@
                   <Button fx:id="Inventory_apply_remove" layoutX="323.0" layoutY="310.0" mnemonicParsing="false" onAction="#Inv_apply_remove_clicked" prefHeight="25.0" prefWidth="81.0" style="-fx-background-color: #4e9296;" text="Remove" />
                </children>
             </AnchorPane>
-            <AnchorPane fx:id="Inventory_pane11" layoutX="17.0" layoutY="20.0" prefHeight="400.0" prefWidth="453.0" visible="false">
+            <AnchorPane fx:id="Service_Request_Pane" layoutX="17.0" layoutY="20.0" prefHeight="400.0" prefWidth="453.0" visible="false">
                <children>
                   <Text layoutX="39.0" layoutY="41.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Service Requests" wrappingWidth="354.49542236328125">
                      <font>
@@ -161,21 +165,96 @@
                         <TableColumn prefWidth="75.0" text="C2" />
                      </columns>
                   </TableView>
+                  <Button fx:id="add_booking_btn" layoutX="33.0" layoutY="55.0" mnemonicParsing="false" onAction="#add_booking_clicked" style="-fx-background-color: #4e9296;" text="Add Booking" />
+                  <Button fx:id="remove_booking_btn" layoutX="325.0" layoutY="55.0" mnemonicParsing="false" onAction="#remove_booking_clicked" style="-fx-background-color: #4e9296;" text="Remove Booking" />
                </children>
             </AnchorPane>
-            <AnchorPane fx:id="Inventory_pane111" layoutX="27.0" layoutY="15.0" prefHeight="415.0" prefWidth="453.0">
+            <AnchorPane fx:id="System_Admin_pane" layoutX="27.0" layoutY="15.0" prefHeight="415.0" prefWidth="453.0" visible="false">
                <children>
-                  <Text layoutX="39.0" layoutY="41.0" strokeType="OUTSIDE" strokeWidth="0.0" text="System Admins" wrappingWidth="354.49542236328125">
-                     <font>
-                        <Font name="System Bold" size="30.0" />
-                     </font>
-                  </Text>
                   <TableView fx:id="System_Admin_list" layoutX="25.0" layoutY="86.0" prefHeight="299.0" prefWidth="414.0">
                      <columns>
                         <TableColumn prefWidth="75.0" text="C1" />
                         <TableColumn prefWidth="75.0" text="C2" />
                      </columns>
                   </TableView>
+                  <Text layoutX="39.0" layoutY="41.0" strokeType="OUTSIDE" strokeWidth="0.0" text="System Admins" wrappingWidth="354.49542236328125">
+                     <font>
+                        <Font name="System Bold" size="30.0" />
+                     </font>
+                  </Text>
+               </children>
+            </AnchorPane>
+            <AnchorPane fx:id="add_booking_pane" layoutX="47.0" layoutY="15.0" prefHeight="400.0" prefWidth="453.0" visible="false">
+               <children>
+                  <Text layoutX="27.0" layoutY="47.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Enter Service Request Details" wrappingWidth="423.16217041015625">
+                     <font>
+                        <Font name="System Bold" size="30.0" />
+                     </font>
+                  </Text>
+                  <TextField fx:id="Reg_num" layoutX="27.0" layoutY="110.0" prefHeight="25.0" prefWidth="182.0" promptText="Car Reg Number" />
+                  <Button fx:id="booking_apply_add" layoutX="328.0" layoutY="341.0" mnemonicParsing="false" onAction="#booking_apply_add_clicked" prefHeight="25.0" prefWidth="81.0" style="-fx-background-color: #4e9296;" text="Add" />
+                  <RadioButton fx:id="Modify_btn" layoutX="34.0" layoutY="147.0" mnemonicParsing="false" onAction="#Modify_clicked" text="Modify" />
+                  <RadioButton fx:id="Denting_btn" layoutX="32.0" layoutY="175.0" mnemonicParsing="false" onAction="#Denting_clicked" text="Denting" />
+                  <RadioButton fx:id="Painting_btn" layoutX="31.0" layoutY="207.0" mnemonicParsing="false" onAction="#Painting_clicked" text="Painting" />
+                  <RadioButton fx:id="oil_change_btn" layoutX="30.0" layoutY="234.0" mnemonicParsing="false" onAction="#oil_change_clicked" text="Oil Change" />
+                  <RadioButton fx:id="wrap_btn" layoutX="31.0" layoutY="263.0" mnemonicParsing="false" onAction="#Wrap_btn_clicked" text="Wrapping" />
+                  <TextField fx:id="cust_id_service" layoutX="28.0" layoutY="77.0" prefHeight="25.0" prefWidth="180.0" promptText="Customer ID" />
+                  <TextField fx:id="Service_ID" layoutX="22.0" layoutY="293.0" promptText="Serive ID" />
+               </children>
+            </AnchorPane>
+            <AnchorPane fx:id="remove_booking_pane" layoutX="48.0" layoutY="15.0" prefHeight="400.0" prefWidth="453.0" visible="false">
+               <children>
+                  <Text layoutX="27.0" layoutY="41.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Enter Booking Details" wrappingWidth="399.82879638671875">
+                     <font>
+                        <Font name="System Bold" size="30.0" />
+                     </font>
+                  </Text>
+                  <TextField fx:id="Reg_num_R" layoutX="27.0" layoutY="110.0" prefHeight="25.0" prefWidth="182.0" promptText="Car Reg Number" />
+                  <Button fx:id="booking_apply_remove" layoutX="328.0" layoutY="341.0" mnemonicParsing="false" onAction="#booking_apply_remove_clicked" prefHeight="25.0" prefWidth="81.0" style="-fx-background-color: #4e9296;" text="Remove" />
+                  <TextField fx:id="Service_ID_R" layoutX="27.0" layoutY="150.0" prefHeight="25.0" prefWidth="183.0" promptText="Service ID" />
+               </children>
+            </AnchorPane>
+            <AnchorPane fx:id="Cars_pane" layoutX="47.0" layoutY="15.0" prefHeight="400.0" prefWidth="453.0" visible="false">
+               <children>
+                  <Text layoutX="26.0" layoutY="46.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Cars List" wrappingWidth="221.162109375">
+                     <font>
+                        <Font name="System Bold" size="30.0" />
+                     </font>
+                  </Text>
+                  <Button fx:id="add_cars_btn" layoutX="39.0" layoutY="87.0" mnemonicParsing="false" onAction="#add_cars_clicked" style="-fx-background-color: #4e9296;" text="Add Car" />
+                  <TableView fx:id="Cars_List" layoutX="32.0" layoutY="127.0" prefHeight="260.0" prefWidth="414.0">
+                     <columns>
+                        <TableColumn prefWidth="75.0" text="C1" />
+                        <TableColumn prefWidth="75.0" text="C2" />
+                     </columns>
+                  </TableView>
+                  <Button fx:id="remove_cars_btn" layoutX="315.0" layoutY="87.0" mnemonicParsing="false" onAction="#remove_cars_clicked" style="-fx-background-color: #4e9296;" text="Remove Car" />
+               </children>
+            </AnchorPane>
+            <AnchorPane fx:id="add_car_pane" layoutX="48.0" layoutY="20.0" prefHeight="400.0" prefWidth="453.0" visible="false">
+               <children>
+                  <Text layoutX="27.0" layoutY="41.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Enter Car Details" wrappingWidth="399.82879638671875">
+                     <font>
+                        <Font name="System Bold" size="30.0" />
+                     </font>
+                  </Text>
+                  <TextField fx:id="Cust_ID_Car" layoutX="27.0" layoutY="110.0" prefHeight="25.0" prefWidth="182.0" promptText="Customer ID" />
+                  <TextField fx:id="Reg_Num_Car" layoutX="27.0" layoutY="154.0" prefHeight="25.0" prefWidth="181.0" promptText="Vehicle Reg Num" />
+                  <Button fx:id="Car_apply_add" layoutX="323.0" layoutY="310.0" mnemonicParsing="false" onAction="#Car_apply_add_clicked" prefHeight="25.0" prefWidth="81.0" style="-fx-background-color: #4e9296;" text="Add" />
+                  <TextField fx:id="Color" layoutX="27.0" layoutY="200.0" prefHeight="25.0" prefWidth="184.0" promptText="Color" />
+               </children>
+            </AnchorPane>
+            <AnchorPane fx:id="Remove_Car_Pane" layoutX="48.0" layoutY="15.0" prefHeight="400.0" prefWidth="453.0" visible="false">
+               <children>
+                  <Text layoutX="27.0" layoutY="41.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Enter Car Details" wrappingWidth="399.82879638671875">
+                     <font>
+                        <Font name="System Bold" size="30.0" />
+                     </font>
+                  </Text>
+                  <TextField fx:id="Cust_ID_Car_R" layoutX="27.0" layoutY="110.0" prefHeight="25.0" prefWidth="182.0" promptText="Customer ID" />
+                  <TextField fx:id="Reg_Num_Car_R" layoutX="27.0" layoutY="154.0" prefHeight="25.0" prefWidth="181.0" promptText="Vehicle Reg Num" />
+                  <Button fx:id="Car_apply_remove" layoutX="323.0" layoutY="310.0" mnemonicParsing="false" onAction="#Car_apply_remove_clicked" prefHeight="25.0" prefWidth="81.0" style="-fx-background-color: #4e9296;" text="Remove" />
+                  <TextField fx:id="Color_R" layoutX="27.0" layoutY="200.0" prefHeight="25.0" prefWidth="184.0" promptText="Color" />
                </children>
             </AnchorPane>
          </children>

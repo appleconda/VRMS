@@ -119,7 +119,10 @@ public class db_handler {
             System.out.println(query);
         } else if (clobj.getClass().getName() == "businessLogic.bookings") {
             query = ((bookings) clobj).jdbc_insertString_maker();
-
+        }
+        else if (clobj.getClass().getName() == "businessLogic.vehicles")
+        {
+            query = ((vehicles)clobj).jdbc_insertString_maker();
         }
         else
         {
@@ -186,10 +189,33 @@ public class db_handler {
             try (Statement tmt = conn.createStatement()) {
                 ResultSet rs = tmt.executeQuery(query);
                 while (rs.next()) {
-                    Object obj = new bookings();
+                    int cust_id = rs.getInt("customer_id");
+                    String str = "id = " + cust_id; 
+                    String [] strs  = {str}; 
+                    Vector<Object> returned_cust_obj = conditional_get("customer", strs);
+                    Object obj = new bookings(((customer)returned_cust_obj.firstElement()));
                     ((bookings) obj).setDate(rs.getString("date"));
                     ((bookings) obj).setTime(rs.getString("time"));
                     ((bookings) obj).setId(rs.getInt("id"));
+                    clobj.add(obj);
+                }
+            } catch (SQLException sqlex) {
+            }
+
+        }
+        else if (className == "businessLogic.vehicles")
+        {
+            String query = "select * from vehicles";
+            try (Statement tmt = conn.createStatement()) {
+                ResultSet rs = tmt.executeQuery(query);
+                while (rs.next()) {
+                    int cust_id = rs.getInt("customer_id");
+                    String str = "id = " + cust_id; 
+                    String [] strs  = {str}; 
+                    Vector<Object> returned_cust_obj = conditional_get("customer", strs);
+                    Object obj = new vehicles(((customer)returned_cust_obj.firstElement()));
+                    ((vehicles) obj).setColor((rs.getString("color")));
+                    ((vehicles) obj).setRegNo((rs.getString("regNo")));
                     clobj.add(obj);
                 }
             } catch (SQLException sqlex) {
@@ -300,10 +326,43 @@ public class db_handler {
             try (Statement tmt = conn.createStatement()) {
                 ResultSet rs = tmt.executeQuery(query);
                 while (rs.next()) {
-                    Object obj = new bookings();
+                    int cust_id = rs.getInt("customer_id");
+                    String str = "id = " + cust_id; 
+                    String [] strs  = {str}; 
+                    Vector<Object> returned_cust_obj = conditional_get("customer", strs);
+                    Object obj = new bookings(((customer)returned_cust_obj.firstElement()));
                     ((bookings) obj).setDate(rs.getString("date"));
                     ((bookings) obj).setTime(rs.getString("time"));
                     ((bookings) obj).setId(rs.getInt("id"));
+                    clobj.add(obj);
+                }
+            } catch (SQLException sqlex) {
+
+            }
+        }
+        else if (className == "businessLogic.vehicles")
+        {
+            String query = "select * from vehicles where ";
+            String temp = "";
+            for (int i = 0; i < conditions.length; i++) {
+                temp += conditions[i];
+                if (i < conditions.length - 1) {
+                    temp += " and ";
+                }
+
+            }
+            query += temp;
+
+            try (Statement tmt = conn.createStatement()) {
+                ResultSet rs = tmt.executeQuery(query);
+                while (rs.next()) {
+                    int cust_id = rs.getInt("customer_id");
+                    String str = "id = " + cust_id; 
+                    String [] strs  = {str}; 
+                    Vector<Object> returned_cust_obj = conditional_get("customer", strs);
+                    Object obj = new vehicles(((customer)returned_cust_obj.firstElement()));
+                    ((vehicles) obj).setColor((rs.getString("color")));
+                    ((vehicles) obj).setRegNo((rs.getString("regNo")));
                     clobj.add(obj);
                 }
             } catch (SQLException sqlex) {
